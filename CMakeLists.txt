@@ -14,5 +14,11 @@ project(serialport-tools)
 add_executable(serialport-pipe serialport-pipe.c shared.c)
 target_link_libraries(serialport-pipe ${LIBSERIALPORT_LIBRARIES} ${POPT_LIBRARIES})
 
+add_executable(serialport-list serialport-list.c shared.c)
+target_link_libraries(serialport-list ${LIBSERIALPORT_LIBRARIES} ${POPT_LIBRARIES})
+
 install(TARGETS serialport-pipe
+        RUNTIME DESTINATION bin)
+
+install(TARGETS serialport-list
         RUNTIME DESTINATION bin)

@@ -1,6 +1,9 @@
 #ifndef SHARED_H
 #define SHARED_H
 
+#include <popt.h>
+
+
 struct sp_port;
 enum sp_return;
 struct poptOption;

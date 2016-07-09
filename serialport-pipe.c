@@ -41,12 +41,6 @@ static void ParseOptions( int argc, const char** argv )
         }
     }
 
-    //const char* leftoverArgument;
-    //while((leftoverArgument = poptGetArg(optionContext)))
-    //{
-    //    fprintf(stderr, "leftover: '%s'\n", leftoverArgument);
-    //}
-
     poptFreeContext(optionContext);
 }
 
@@ -89,7 +83,6 @@ static void Pump( int sourceFD, int destinationFD )
             write(destinationFD, buffer, bytesRead);
             totalBytesRead += bytesRead;
 
-            //printf("bytesRead=%d IOBufferSize=%d\n", (int)bytesRead, IOBufferSize);
             if(bytesRead < IOBufferSize)
                 break;
         }
@@ -113,8 +106,7 @@ static void EventLoop()
         FatalError("sigprocmask");
 
     int serialPortFD = -1;
-    const enum sp_return returnCode = sp_get_port_handle(SerialPort, &serialPortFD);
-    if(returnCode != SP_OK) { HandleSerialPortError(returnCode); }
+    HandleSerialPortError(sp_get_port_handle(SerialPort, &serialPortFD));
 
     while(!StopEventLoop)
     {
@@ -143,15 +135,12 @@ static void EventLoop()
         {
             if(FD_ISSET(STDIN_FILENO, &fdReadSet))
             {
-                //puts("---- stdin > serial port ----");
                 Pump(STDIN_FILENO, serialPortFD);
             }
             if(FD_ISSET(serialPortFD, &fdReadSet))
             {
-                //puts("---- serial port > stdout ----");
                 Pump(serialPortFD, STDOUT_FILENO);
             }
-            //puts("------------------------------");
         }
     }
 }

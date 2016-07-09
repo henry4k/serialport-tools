@@ -98,8 +98,6 @@ static const char* ReturnCodeToString( enum sp_return returnCode )
 {
     switch(returnCode)
     {
-        case SP_OK:
-            return "ok";
         case SP_ERR_ARG:
             return "Invalid arguments were passed to the function.";
         case SP_ERR_FAIL:
@@ -115,15 +113,18 @@ static const char* ReturnCodeToString( enum sp_return returnCode )
 
 void HandleSerialPortError( enum sp_return returnCode )
 {
-    if(returnCode == SP_ERR_FAIL)
+    if(returnCode != SP_OK)
     {
-        char* errorMessage = sp_last_error_message();
-        FatalError("%s", errorMessage);
-        sp_free_error_message(errorMessage);
-    }
-    else
-    {
-        FatalError("%s", ReturnCodeToString(returnCode));
+        if(returnCode == SP_ERR_FAIL)
+        {
+            char* errorMessage = sp_last_error_message();
+            FatalError("%s", errorMessage);
+            sp_free_error_message(errorMessage);
+        }
+        else
+        {
+            FatalError("%s", ReturnCodeToString(returnCode));
+        }
     }
 }
 
