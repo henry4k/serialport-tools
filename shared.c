@@ -140,12 +140,7 @@ void OpenSerialPort( struct sp_port** port, enum sp_mode flags )
         default: HandleSerialPortError(result);
     }
 
-    result = sp_open(*port, flags);
-    switch(result)
-    {
-        case SP_OK: break;
-        default: HandleSerialPortError(result);
-    }
+    HandleSerialPortError(sp_open(*port, flags));
 
     result = sp_set_baudrate(*port, BaudRate);
     switch(result)
@@ -163,12 +158,7 @@ void OpenSerialPort( struct sp_port** port, enum sp_mode flags )
         default: HandleSerialPortError(result);
     }
 
-    result = sp_set_parity(*port, StringToParity(Parity));
-    switch(result)
-    {
-        case SP_OK: break;
-        default: HandleSerialPortError(result);
-    }
+    HandleSerialPortError(sp_set_parity(*port, StringToParity(Parity)));
 
     result = sp_set_stopbits(*port, StopBits);
     switch(result)
@@ -178,10 +168,5 @@ void OpenSerialPort( struct sp_port** port, enum sp_mode flags )
         default: HandleSerialPortError(result);
     }
 
-    result = sp_set_flowcontrol(*port, StringToFlowControl(FlowControl));
-    switch(result)
-    {
-        case SP_OK: break;
-        default: HandleSerialPortError(result);
-    }
+    HandleSerialPortError(sp_set_flowcontrol(*port, StringToFlowControl(FlowControl)));
 }
